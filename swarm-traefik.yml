@@ -1,0 +1,79 @@
+# Docker Swarm file - Creates Traefik proxy/dashboard and load balances multiple domains
+# Traefik documentation https://docs.traefik.io/v2.1/providers/docker/#docker-swarm-mode  
+
+# Run Example:
+# docker stack deploy -c swarm-traefik.yml stack
+# Add '127.0.0.1 example.com' to your /etc/hosts file
+# Add '127.0.0.1 example2.com' to your /etc/hosts file
+# example.com:8080 for traefik dashboard
+# example.com for whoami website
+# example2.com for nginx website
+
+version: "3.7"
+
+services:
+  traefik:
+    image: traefik:v2.1
+    ports:
+      - 80:80
+      - 8080:8080
+    command:
+      - --api.insecure=true # not for production
+      - --api.dashboard=true
+      - --log.level=DEBUG
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=web
+      - --providers.docker.endpoint=unix:///var/run/docker.sock
+      - --providers.docker.swarmMode=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - web
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.api.rule=Host(`monitor.example.com`)
+        - traefik.http.routers.api.service=api@internal
+        - traefik.http.services.dashboard.loadbalancer.server.port=8080
+
+  whoami:
+    image: containous/whoami
+    deploy:
+      replicas: 2
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.webpage-whoami.rule=Host(`example.com`)
+        - traefik.http.services.webpage-whoami.loadbalancer.server.port=80
+    networks:
+      - web
+
+  nginx:
+    image: nginx
+    deploy:
+      replicas: 2
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.webpage-nginx.rule=Host(`example2.com`)
+        - traefik.http.services.webpage-nginx.loadbalancer.server.port=80
+    networks:
+      - web
+
+  visualizer:
+    image: dockersamples/visualizer:stable
+    deploy:
+      replicas: 1
+    ports:
+      - 5000:8080
+    networks:
+      - web
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  
+
+networks:
+  web:
+    external: false

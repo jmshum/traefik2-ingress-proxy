@@ -1,0 +1,49 @@
+# Docker-compose file to create 1 traefix 2 proxy server and 1 web server (example.com)
+# Add '127.0.0.1 example.com' to your /etc/hosts file
+# example.com:8080 for traefik dashboard
+# example.com for whoami website
+
+# Running the image
+# docker-compose up
+
+# or Scale services
+# docker-compose up -d --scale webpage=2
+
+version: "3.7"
+
+services:
+  traefik:
+    image: traefik:v2.1
+    ports:
+      - 80:80
+      - 8080:8080
+    command:
+      - --api.insecure=true
+      - --api.dashboard=true
+      - --api.debug=true
+      - --log.level=DEBUG
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=web
+      - --entrypoints.web.address=:80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - web
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.api.rule=Host(`monitor.example.com`)
+      - traefik.http.routers.api.service=api@internal
+
+  webpage:
+    image: containous/whoami
+    networks:
+      - web
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.webpage.rule=Host(`example.com`)
+      - traefik.http.routers.webpage.entrypoints=web
+      
+networks:
+  web:
+    external: false
