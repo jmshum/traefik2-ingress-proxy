@@ -33,7 +33,7 @@ Running with docker-compose
 ```bash
 docker-compose up
 ```
-or scale your webpage contains
+or scale your webpage containers
 ```bash
 docker-compose up -d --scale webpage=2
 ```
