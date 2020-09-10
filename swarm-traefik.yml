@@ -1,5 +1,5 @@
 # Docker Swarm file - Creates Traefik proxy/dashboard and load balances multiple domains
-# Traefik documentation https://docs.traefik.io/v2.1/providers/docker/#docker-swarm-mode  
+# Traefik documentation https://docs.traefik.io/v2.3/providers/docker/#docker-swarm-mode  
 
 # Run Example:
 # docker stack deploy -c swarm-traefik.yml stack
