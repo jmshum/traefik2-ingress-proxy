@@ -18,7 +18,7 @@ services:
       - 80:80
       - 8080:8080
     command:
-      - --api.insecure=true
+      - --api.insecure=true # not for production
       - --api.dashboard=true
       - --api.debug=true
       - --log.level=DEBUG
