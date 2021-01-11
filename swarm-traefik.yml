@@ -9,11 +9,11 @@
 # example.com for whoami website
 # example2.com for nginx website
 
-version: "3.8"
+version: "3.9"
 
 services:
   traefik:
-    image: traefik:v2.3
+    image: traefik:v2.4
     ports:
       - 80:80
       - 8080:8080
