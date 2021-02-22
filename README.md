@@ -26,7 +26,7 @@ docker stack deploy -c swarm-traefik.yml example-stack
 
 ### Docker Compose
 * Add ```127.0.0.1 example.com``` to your /etc/hosts file
-* example.com:8080 for traefix dashboard
+* example.com:8080 for traefik dashboard
 * example.com for whoami website
 
 Running with docker-compose
