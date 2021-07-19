@@ -2,7 +2,7 @@
 These are two example configurations for an ingress service using [Traefik 2](https://containo.us/traefik/) as a reverse proxy / load balancer for [Docker Swarm](https://docs.docker.com/engine/swarm/) and [Docker Compose](https://docs.docker.com/compose/). This will allow each container to be published on the same port (e.g. port 80, 443), but hosting multiple web domains. This also includes a traefik dashboard and a Docker Swarm dashboard.
 
 # Documentation
-[Traefik 2 documentation](https://docs.traefik.io/v2.4/providers/docker/#docker-swarm-mode)
+[Traefik 2 documentation](https://docs.traefik.io/v2.5/providers/docker/#docker-swarm-mode)
 
 [Docker Swarm](https://docs.docker.com/engine/swarm/)
 
