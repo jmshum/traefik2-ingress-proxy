@@ -29,11 +29,11 @@ docker stack deploy -c swarm-traefik.yml example-stack
 * example.com:8080 for traefik dashboard
 * example.com for whoami website
 
-Running with docker-compose
+Running with docker compose
 ```bash
-docker-compose up
+docker compose up
 ```
 or scale your webpage containers
 ```bash
-docker-compose up -d --scale webpage=2
+docker compose up -d --scale webpage=2
 ```
