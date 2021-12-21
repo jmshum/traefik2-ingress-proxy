@@ -9,8 +9,6 @@
 # or Scale services
 # docker-compose up -d --scale webpage=2
 
-version: "3.9"
-
 services:
   traefik:
     image: traefik:v2.5
