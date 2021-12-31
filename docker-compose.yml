@@ -4,10 +4,10 @@
 # example.com for whoami website
 
 # Running the image
-# docker-compose up
+# docker compose up
 
 # or Scale services
-# docker-compose up -d --scale webpage=2
+# docker compose up -d --scale webpage=2
 
 services:
   traefik:
